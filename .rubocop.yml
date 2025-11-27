@@ -1,0 +1,8 @@
+# Використовувати стандартний набір правил
+inherit_from:
+  - .rubocop_todo.yml # Якщо він буде створений автоматично
+  - config/default.yml # Може знадобитися, якщо ти використовуєш інший гем
+
+# Приклад вимкнення правила:
+# Style/FrozenStringLiteralComment:
+#   Enabled: false

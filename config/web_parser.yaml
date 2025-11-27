@@ -1,0 +1,24 @@
+web_scraping:
+  # URL початкової сторінки (перша сторінка каталогу)
+  start_page: "http://books.toscrape.com/catalogue/page-1.html"
+  
+  # Селектор картки товару (щоб ми знали, де починається книга)
+  item_selector: ".product_pod"
+  
+  # Селектор для отримання назв продуктів (всередині картки)
+  product_name_selector: "h3 a"
+  
+  # Селектор для отримання цін продуктів
+  product_price_selector: ".price_color"
+  
+  # Селектор для отримання посилання на детальну сторінку
+  product_link_selector: "h3 a"
+  
+  # Селектор для отримання зображень продуктів (прев'ю)
+  product_image_selector: ".image_container img"
+  
+  # Селектор для отримання опису (це вже на детальній сторінці книги)
+  product_description_selector: "#product_description + p"
+  
+  # Селектор категорії (на детальній сторінці - це посилання у "хлібних крихтах")
+  product_category_selector: ".breadcrumb li:nth-child(3) a"

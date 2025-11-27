@@ -1,0 +1,13 @@
+database_config:
+  # Тип бази даних, що використовується (поки що sqlite)
+  database_type: sqlite
+  
+  sqlite_database:
+    # Шлях до файлу бази даних
+    db_file: "db/local_database.sqlite"
+    timeout: 5000
+    pool_size: 5
+    
+  mongodb_database:
+    uri: "mongodb://localhost:27017"
+    db_name: "maks_app_db"
