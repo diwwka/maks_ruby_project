@@ -4,11 +4,13 @@ source "https://rubygems.org"
 
 # gem "rails"
 
-gem "httparty"
-gem "nokogiri"
-gem "fiddle"
+gem "httparty" # Для парсингу 
+gem "nokogiri" # Для парсингу 
+gem "mechanize" # Для роозуміної навігації 
+gem "fiddle" # для уникнення попереджень у Windows
 
-# Геми, потрібні лише для розробки (наприклад, для VS Code)
+
+# Геми, потрібні лише для розробки (для VS Code)
 group :development do
   gem "solargraph"
   gem "rubocop"
