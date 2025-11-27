@@ -1,0 +1,14 @@
+# Файли та папки, створені Bundler та Ruby
+.bundle/               # Локальні налаштування Bundler
+vendor/bundle          # Місце, куди Bundler встановлює геми
+Gemfile.lock           # (ВАЖЛИВО: НЕ ІГНОРУЄМО, але переконаємося, що його немає у списку)
+
+# Логи, кеш та тимчасові файли
+log/
+tmp/
+*.log
+
+# Файли IDE та OS
+.vscode/               # Внутрішні налаштування Visual Studio Code
+.DS_Store              # Файли macOS (Apple-специфічні)
+Thumbs.db              # Файли Windows (прев'ю зображень)
