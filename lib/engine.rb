@@ -3,6 +3,7 @@ require_relative 'logger_manager'
 require_relative 'database_connector'
 require_relative 'simple_website_parser'
 require_relative 'configurator'
+require_relative 'archiver'
 
 module Tarnovetskyi
   class Engine
@@ -70,12 +71,19 @@ module Tarnovetskyi
       
       # Збереження (якщо парсер щось знайшов)
       if @parser&.item_collection&.any?
+        puts "Знайдено #{@parser.item_collection.count} елементів. Зберігаємо..."
+        
         run_save_to_csv
         run_save_to_json
         run_save_to_yaml
         run_save_to_sqlite
+        
+        # Запуск архівації 
+        run_archive
+        
       else
         Tarnovetskyi::LoggerManager.log_processed_file("No items to save.")
+        puts "Нічого не знайдено, збереження пропущено."
       end
     end
 
@@ -123,5 +131,24 @@ module Tarnovetskyi
       Tarnovetskyi::LoggerManager.log_processed_file("Data saved to SQLite.")
       puts "  -> Збережено в SQLite (дублікати пропущені)"
     end
+
+    def run_archive
+      Tarnovetskyi::LoggerManager.log_processed_file("Starting archiving...")
+      
+      # Список папок, які хочемо запакувати
+      folders_to_zip = ['output', 'media']
+      
+      # Назва спільного архіву
+      # Ми не можемо покласти архів у папку 'output', яку ми ж і архівуємо!
+      # Це створить рекурсію (архів буде намагатися запакувати сам себе).
+      # Тому краще покласти його в корінь або виключити його розширення в архіваторі.
+      # Але найпростіше - покласти його в корінь проєкту або назвати інакше.
+      
+      zip_filename = "full_project_archive.zip"
+      
+      # Викликаємо оновлений архіватор
+      Tarnovetskyi::Archiver.archive(folders_to_zip, zip_filename)
+    end
+    
   end
 end

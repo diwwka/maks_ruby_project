@@ -97,6 +97,7 @@ GEM
     ruby-progressbar (1.13.0)
     rubyntlm (0.6.5)
       base64
+    rubyzip (3.2.2)
     solargraph (0.57.0)
       backport (~> 1.2)
       benchmark (~> 0.4)
@@ -146,6 +147,7 @@ DEPENDENCIES
   nokogiri
   rake
   rubocop
+  rubyzip (>= 2.3.0)
   solargraph
   sqlite3
 

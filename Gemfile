@@ -11,6 +11,7 @@ gem "fiddle" # для уникнення попереджень у Windows
 gem "sqlite3" # для роботи з базою даних SQLite
 gem "faker" # для генерації фейкових даних
 gem "rake" # додаємо rake , щоб Bundler його бачив 
+gem "rubyzip", ">=2.3.0"
 # Геми, потрібні лише для розробки (для VS Code)
 group :development do
   gem "solargraph"
