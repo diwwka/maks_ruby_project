@@ -16,7 +16,7 @@ module Tarnovetskyi
       @parser = nil
     end
 
-    # Основний метод запуску [cite: 406-413]
+    # Основний метод запуску 
     def run
       # 1. Завантаження конфігурації
       load_config
@@ -58,7 +58,7 @@ module Tarnovetskyi
       Tarnovetskyi::LoggerManager.init_logger(@config)
     end
 
-    # Метод, який запускає потрібні дії [cite: 403-405]
+    # Метод, який запускає потрібні дії 
     def run_methods
       # Ми перевіряємо кожен ключ у конфігураторі (наприклад, run_website_parser)
       # Але значення беремо безпосередньо з @config (якщо вони там є) або використовуємо дефолтні
@@ -87,7 +87,7 @@ module Tarnovetskyi
       end
     end
 
-    # --- Реалізація дій [cite: 416-423] ---
+    # --- Реалізація дій  ---
 
     def run_website_parser
       Tarnovetskyi::LoggerManager.log_processed_file("Running Website Parser...")

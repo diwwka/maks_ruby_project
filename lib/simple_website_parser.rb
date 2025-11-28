@@ -17,7 +17,7 @@ module Tarnovetskyi
       @agent = Mechanize.new
       @agent.user_agent_alias = 'Mac Safari' # Прикидаємось браузером
       
-      # Ініціалізація колекції (Кошика) [cite: 400]
+      # Ініціалізація колекції (Кошика) 
       @item_collection = Tarnovetskyi::Cart.new
       
       Tarnovetskyi::LoggerManager.log_processed_file("Parser initialized with config")
@@ -63,14 +63,14 @@ module Tarnovetskyi
 
     private
 
-    # Витягує посилання на продукти зі сторінки каталогу [cite: 406]
+    # Витягує посилання на продукти зі сторінки каталогу 
     def extract_products_links(page)
       # Використовуємо селектор з конфігу (product_link_selector: "h3 a")
       selector = @parser_config['product_link_selector']
       page.search(selector).map { |link| link['href'] }
     end
 
-    # Парсить детальну сторінку продукту [cite: 408]
+    # Парсить детальну сторінку продукту 
     def parse_product_page(url)
       begin
         Tarnovetskyi::LoggerManager.log_processed_file("Processing page: #{url}")
@@ -106,7 +106,7 @@ module Tarnovetskyi
       end
     end
 
-    # --- Методи витягування даних (Extractors) [cite: 409-412] ---
+    # --- Методи витягування даних (Extractors)  ---
 
     def extract_product_name(page)
       # На детальній сторінці назва зазвичай в h1
@@ -145,7 +145,7 @@ module Tarnovetskyi
         end
     end
 
-    # Перевірка URL [cite: 413]
+    # Перевірка URL 
     def check_url_response(url)
       begin
         # Mechanize head request

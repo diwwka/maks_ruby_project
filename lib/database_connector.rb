@@ -60,7 +60,7 @@ module Tarnovetskyi
       end
     end
 
-    # Заглушка для MongoDB [cite: 48]
+    # Заглушка для MongoDB 
     def connect_to_mongodb
       Tarnovetskyi::LoggerManager.log_processed_file("MongoDB connection requested (not implemented in this lab scope)")
       # Тут був би код для Mongo::Client.new(...)

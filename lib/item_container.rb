@@ -1,7 +1,7 @@
 module Tarnovetskyi
   module ItemContainer
     module ClassMethods
-      # Метод класу: повертає інформацію про клас (версію) [cite: 103]
+      # Метод класу: повертає інформацію про клас (версію) 
       def class_info
         "Class: #{self.name}, Version: 1.0"
       end
@@ -13,26 +13,26 @@ module Tarnovetskyi
     end
 
     module InstanceMethods
-      # a. add_item: Додає товар до колекції [cite: 96]
+      # a. add_item: Додає товар до колекції 
       def add_item(item)
         @items << item
         # Використовуємо LoggerManager з твого простору імен
         Tarnovetskyi::LoggerManager.log_processed_file("Item added: #{item.name}")
       end
 
-      # b. remove_item: Видаляє товар з колекції [cite: 97]
+      # b. remove_item: Видаляє товар з колекції 
       def remove_item(item)
         @items.delete(item)
         Tarnovetskyi::LoggerManager.log_processed_file("Item removed: #{item.name}")
       end
 
-      # c. delete_items: Видаляє всі товари (очищення) [cite: 98-99]
+      # c. delete_items: Видаляє всі товари (очищення) 
       def delete_items
         @items.clear
         Tarnovetskyi::LoggerManager.log_processed_file("All items deleted from cart")
       end
 
-      # d. method_missing: Магія Ruby [cite: 100]
+      # d. method_missing: Магія Ruby 
       # Якщо викликати метод show_all_items, він спрацює через цей перехоплювач
       def method_missing(method_name, *args, &block)
         if method_name == :show_all_items
@@ -50,7 +50,7 @@ module Tarnovetskyi
       end
     end
 
-    # Callback-метод: Запускається автоматично при include [cite: 86-92]
+    # Callback-метод: Запускається автоматично при include 
     def self.included(base)
       base.extend(ClassMethods)
       base.send(:include, InstanceMethods)

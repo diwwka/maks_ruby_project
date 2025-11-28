@@ -11,19 +11,19 @@ module Tarnovetskyi
       @config_data = {}
     end
 
-    # Метод config: Завантажує конфігурацію [cite: 642]
+    # Метод config: Завантажує конфігурацію 
     # Приймає шлях до основного файлу і директорію з іншими YAML
     def config(default_config_path, yaml_config_dir = nil)
-      # 1. Завантажити основні дані [cite: 646]
+      # 1. Завантажити основні дані 
       @config_data = load_default_config(default_config_path)
 
-      # 2. Завантажити додаткові файли, якщо директорія вказана [cite: 647]
+      # 2. Завантажити додаткові файли, якщо директорія вказана 
       if yaml_config_dir && Dir.exist?(yaml_config_dir)
         additional_configs = load_config(yaml_config_dir)
         @config_data.merge!(additional_configs)
       end
 
-      # 3. Обробити блок, якщо він переданий [cite: 648]
+      # 3. Обробити блок, якщо він переданий 
       yield(@config_data) if block_given?
 
       @config_data
@@ -36,10 +36,10 @@ module Tarnovetskyi
 
     # Метод для підключення бібліотек 
     def load_libs(root_dir)
-      # 1. Підключення системних бібліотек (приклад: date, json, yaml вже підключені вище) [cite: 660]
+      # 1. Підключення системних бібліотек (приклад: date, json, yaml вже підключені вище) 
       # Тут можна додати масив, якщо потрібно щось специфічне
       
-      # 2. Підключення локальних бібліотек з папки lib (в завданні написано libs, але ми використовуємо lib) [cite: 661]
+      # 2. Підключення локальних бібліотек з папки lib (в завданні написано libs, але ми використовуємо lib) 
       # Використовуємо Dir.glob для пошуку всіх .rb файлів
       lib_path = File.join(root_dir, 'lib', '**', '*.rb')
       
@@ -54,7 +54,7 @@ module Tarnovetskyi
 
     private
 
-    # Приватний метод завантаження основного конфігу з ERB [cite: 650]
+    # Приватний метод завантаження основного конфігу з ERB 
     def load_default_config(path)
       return {} unless File.exist?(path)
       
@@ -64,7 +64,7 @@ module Tarnovetskyi
       YAML.safe_load(erb_result, aliases: true) || {}
     end
 
-    # Приватний метод завантаження всіх YAML з директорії [cite: 652]
+    # Приватний метод завантаження всіх YAML з директорії 
     def load_config(dir)
       result = {}
       # Знаходимо всі .yaml або .yml файли

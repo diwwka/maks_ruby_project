@@ -4,7 +4,7 @@ module Tarnovetskyi
   class Configurator
     attr_reader :config
 
-    # 1. Значення за замовчуванням [cite: 468-482]
+    # 1. Значення за замовчуванням 
     def initialize
       @config = {
         run_website_parser: 0,   # 0 - вимкнено, 1 - увімкнено
@@ -16,7 +16,7 @@ module Tarnovetskyi
       }
     end
 
-    # 2. Метод configure для оновлення налаштувань [cite: 486-499]
+    # 2. Метод configure для оновлення налаштувань 
     def configure(overrides = {})
       overrides.each do |key, value|
         if @config.key?(key)
@@ -29,7 +29,7 @@ module Tarnovetskyi
       end
     end
 
-    # 3. Доступні методи [cite: 500-502]
+    # 3. Доступні методи 
     def self.available_methods
       [
         :run_website_parser,

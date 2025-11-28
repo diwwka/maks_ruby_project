@@ -1,5 +1,5 @@
 database_config:
-  # Тип бази даних, що використовується (поки що sqlite)
+  # Тип бази даних, що використовується 
   database_type: sqlite
   
   sqlite_database:
