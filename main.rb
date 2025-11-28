@@ -1,18 +1,23 @@
 # main.rb
 require_relative 'lib/app_config_loader'
+# Підключаємо новий файл (хоча load_libs мав би зробити це сам, але для надійності)
+require_relative 'lib/logger_manager' 
 
-# Ініціалізуємо завантажувач
+# 1. Ініціалізація
 config_loader = Tarnovetskyi::AppConfigLoader.new
-
-# 1. Автоматичне підключення бібліотек [cite: 689]
-# Передаємо поточну директорію як корінь
 config_loader.load_libs(Dir.pwd)
-
-# 2. Завантаження конфігурацій [cite: 691]
-# Вказуємо шлях до default_config.yaml та папки config
 config_data = config_loader.config('config/default_config.yaml', 'config')
 
-puts "--- Перевірка Конфігурації ---"
+# 2. Налаштування Логування (НОВЕ)
+puts "--- Ініціалізація Логера ---"
+# Передаємо весь хеш конфігурації, клас сам знайде ключ 'logging'
+Tarnovetskyi::LoggerManager.init_logger(config_data)
 
-# 3. Перевірка завантаження (вивід JSON) [cite: 693]
-config_loader.pretty_print_config_data
+# 3. Тестовий запис у лог
+Tarnovetskyi::LoggerManager.log_processed_file("Програма успішно запустилася!")
+Tarnovetskyi::LoggerManager.log_error("Це тестовий запис помилки (не хвилюйтесь).")
+
+puts "Логування завершено. Перевірте файл logs/app.log"
+
+# (Вивід JSON поки можна закоментувати, щоб не засмічувати екран)
+# config_loader.pretty_print_config_data
