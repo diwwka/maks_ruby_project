@@ -105,17 +105,23 @@ module Tarnovetskyi
     def run_save_to_sqlite
       Tarnovetskyi::LoggerManager.log_processed_file("Saving to SQLite...")
       
-      # Використовуємо підключення з @db_connector
       db = @db_connector.db
+      db.transaction # Початок транзакції
       
       @parser.item_collection.each do |item|
-        # Перевіряємо, чи є такий товар, щоб не дублювати (спрощено)
-        # Вставка даних
-        db.execute("INSERT INTO items (name, price, description, category, image_path) VALUES (?, ?, ?, ?, ?)",
-                   [item.name, item.price, item.description, item.category, item.image_path])
+        begin
+          # Спробуємо вставити
+          db.execute("INSERT INTO items (name, price, description, category, image_path) VALUES (?, ?, ?, ?, ?)",
+                     [item.name, item.price, item.description, item.category, item.image_path])
+        rescue SQLite3::ConstraintException
+          # Якщо база каже, що такий запис вже є - просто пишемо в лог і йдемо далі
+          Tarnovetskyi::LoggerManager.log_processed_file("SKIPPED (Duplicate): #{item.name}")
+        end
       end
       
+      db.commit # Збереження змін
       Tarnovetskyi::LoggerManager.log_processed_file("Data saved to SQLite.")
+      puts "  -> Збережено в SQLite (дублікати пропущені)"
     end
   end
 end

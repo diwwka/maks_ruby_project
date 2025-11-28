@@ -15,7 +15,7 @@ web_scraping:
   product_link_selector: "h3 a"
   
   # Селектор для отримання зображень продуктів (прев'ю)
-  product_image_selector: ".image_container img"
+  product_image_selector: ".item.active img"
   
   # Селектор для отримання опису (це вже на детальній сторінці книги)
   product_description_selector: "#product_description + p"

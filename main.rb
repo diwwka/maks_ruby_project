@@ -8,7 +8,7 @@ begin
   engine.run
   
   puts "\nПрограма успішно виконала роботу!"
-  puts "Перевірте папку output/ та базу даних db/local_database.sqlite"
+  puts "Перевірте папку media/ та базу даних db/local_database.sqlite"
 rescue StandardError => e
   puts "Виникла помилка під час запуску: #{e.message}"
 end

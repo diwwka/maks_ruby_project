@@ -71,7 +71,7 @@ module Tarnovetskyi
       @db.execute <<-SQL
         CREATE TABLE IF NOT EXISTS items (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT,
+          name TEXT UNIQUE,
           price REAL,
           description TEXT,
           category TEXT,

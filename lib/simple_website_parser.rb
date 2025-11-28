@@ -164,8 +164,17 @@ module Tarnovetskyi
       
       local_path = File.join(category_dir, "#{safe_filename}.jpg")
       
-      # Завантаження (використовуємо agent для збереження сесії/cookies якщо треба)
+      # --- НОВА ПЕРЕВІРКА ---
+      # Якщо файл вже існує, ми не завантажуємо його знову
+      if File.exist?(local_path)
+        Tarnovetskyi::LoggerManager.log_processed_file("Image already exists (Skipping download): #{local_path}")
+        return local_path
+      end
+      # ----------------------
+
+      # Завантаження (якщо файлу немає)
       begin
+        Tarnovetskyi::LoggerManager.log_processed_file("Downloading image: #{url}")
         @agent.get(url).save(local_path)
         local_path
       rescue StandardError => e
