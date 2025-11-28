@@ -24,34 +24,41 @@ module Tarnovetskyi
     end
 
     def start_parse
-      start_url = @parser_config['start_page']
+      # --- РАНДОМІЗАЦІЯ СТОРІНКИ ---
+      # На сайті books.toscrape.com є 50 сторінок.
+      # Ми генеруємо випадкове число від 1 до 50.
+      random_page_number = rand(1..50)
+      
+      # Формуємо нову URL-адресу динамічно
+      start_url = "http://books.toscrape.com/catalogue/page-#{random_page_number}.html"
+      
+      Tarnovetskyi::LoggerManager.log_processed_file("🎲 Random page selected: ##{random_page_number}")
       Tarnovetskyi::LoggerManager.log_processed_file("Start parsing from: #{start_url}")
 
-      # Перевірка доступності [cite: 413]
+      # Перевірка доступності
       unless check_url_response(start_url)
         Tarnovetskyi::LoggerManager.log_error("Start URL is not accessible: #{start_url}")
         return
       end
 
-      # Отримуємо сторінку через Mechanize
+      # Отримуємо сторінку
       page = @agent.get(start_url)
       
       # Отримуємо посилання на продукти
       product_links = extract_products_links(page)
       
-      puts "Знайдено #{product_links.size} книг. Починаємо обробку..."
+      puts "На сторінці ##{random_page_number} знайдено #{product_links.size} книг."
+      puts "Обираємо 3 випадкові книги..."
 
-      # Проходимо по кожному посиланню і парсимо детальну сторінку
-      # (Для тесту беремо лише перші 3, щоб не спамити сайт, потім прибереш .first(3))
-      product_links.first(3).each do |link|
-        # Перетворюємо відносне посилання на абсолютне
+      # --- РАНДОМІЗАЦІЯ КНИГ ---
+      # Замість .first(3) використовуємо .sample(3), щоб взяти випадкові книги зі списку
+      product_links.sample(3).each do |link|
         full_link = page.uri.merge(link)
         parse_product_page(full_link)
-        # Невелика пауза, щоб не блокували (етика парсингу)
-        sleep(1)
+        sleep(1) # Етична пауза
       end
       
-      Tarnovetskyi::LoggerManager.log_processed_file("Parsing finished. Total items: #{@item_collection.items.size}")
+      Tarnovetskyi::LoggerManager.log_processed_file("Parsing finished. Total items in session: #{@item_collection.items.size}")
     end
 
     private
