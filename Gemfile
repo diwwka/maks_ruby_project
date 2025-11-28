@@ -9,7 +9,7 @@ gem "nokogiri" # Для парсингу
 gem "mechanize" # Для роозуміної навігації 
 gem "fiddle" # для уникнення попереджень у Windows
 gem "sqlite3" # для роботи з базою даних SQLite
-
+gem "faker" # для генерації фейкових даних
 
 # Геми, потрібні лише для розробки (для VS Code)
 group :development do

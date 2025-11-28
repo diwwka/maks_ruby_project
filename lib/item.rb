@@ -1,40 +1,75 @@
-# Модуль (простір імен)
+require 'faker'
+require_relative 'logger_manager'
+
 module Tarnovetskyi
-  # Клас для представлення одиниці товару (книги)
   class Item
-    # 2. Атрибути класу: (Мінімум 5, включаючи image_path)
-    attr_accessor :name, :price, :description, :category, :image_path 
-    
-    # Вимоги до конструктора та логування ми реалізуємо пізніше,
-    # коли буде реалізовано LoggerManager та ItemCollection.
-    
-    # Реалізуємо базовий конструктор з опціональними атрибутами
+    # 9. Розширення функціональності: Comparable (для порівняння об'єктів, наприклад, за ціною) [cite: 77]
+    include Comparable
+
+    # 5. Геттери та сеттери [cite: 63-64]
+    attr_accessor :name, :price, :description, :category, :image_path
+
+    # 3. Метод initialize [cite: 48-58]
     def initialize(params = {})
-      # Використовуємо значення за замовчуванням
-      @name = params[:name] || 'Немає назви'
-      @price = params[:price] || 0
-      @description = params[:description] || 'Немає опису'
-      @category = params[:category] || 'Немає категорії'
-      # image_path є обов'язковим атрибутом [cite: 378, 383]
-      @image_path = params[:image_path] || 'media/default.jpg' 
+      @name = params[:name] || 'Unknown'
+      @price = params[:price] || 0.0
+      @description = params[:description] || 'No description'
+      @category = params[:category] || 'Uncategorized'
+      @image_path = params[:image_path]
+
+      # Підтримка блоку для налаштування [cite: 50-56]
+      yield(self) if block_given?
+
+      # Валідація обов'язкового атрибуту (за логікою image_path важливий)
+      # Але за умовою ми просто встановлюємо дефолт, якщо не передано, або залишаємо nil
+      
+      # 10. Логування ініціалізації [cite: 78-83]
+      Tarnovetskyi::LoggerManager.log_processed_file("Initialized Item: #{@name}")
     end
-    
-    # 4. Методи to_s, to_h, inspect
-    
-    # to_s: Формує рядок для виводу всіх атрибутів [cite: 399]
+
+    # 4. Метод to_s [cite: 60]
     def to_s
-      "Назва: #{@name}, Ціна: #{@price}, Категорія: #{@category}"
+      "Item: #{@name} | Price: #{@price} | Category: #{@category}"
     end
-    
-    # to_h: Формує хеш на базі атрибутів класу (динамічний підхід) [cite: 400]
+
+    # 4. Метод to_h (динамічний) [cite: 61]
     def to_h
-      # Використовуємо instance_variables для динамічного вилучення атрибутів
-      Hash[instance_variables.map { |var| [var.to_s.delete('@').to_sym, instance_variable_get(var)] }]
+      instance_variables.each_with_object({}) do |var, hash|
+        # Видаляємо символ '@' з назви змінної
+        key = var.to_s.delete('@').to_sym
+        hash[key] = instance_variable_get(var)
+      end
     end
-    
-    # inspect: Відображає інформацію про об'єкт у зручному форматі [cite: 401]
+
+    # 4. Метод inspect [cite: 62]
     def inspect
-      "#<MaksApp::Item:0x#{object_id.to_s(16)} #{to_h}>"
+      "#<Tarnovetskyi::Item:0x#{object_id.to_s(16)} #{to_h}>"
+    end
+
+    # 7. Метод info (alias для to_s) [cite: 72-74]
+    alias_method :info, :to_s
+
+    # 6. Метод update (зміна через блок) [cite: 65-71]
+    def update
+      yield(self) if block_given?
+      Tarnovetskyi::LoggerManager.log_processed_file("Updated Item: #{@name}")
+    end
+
+    # 9. Метод <=> для Comparable (порівнюємо за ціною) [cite: 77]
+    def <=>(other)
+      return nil unless other.is_a?(Item)
+      @price <=> other.price
+    end
+
+    # 8. Метод self.generate_fake (Клас-метод) [cite: 75-76]
+    def self.generate_fake
+      new(
+        name: Faker::Book.title,
+        price: Faker::Commerce.price(range: 10.0..100.0),
+        description: Faker::Lorem.sentence,
+        category: Faker::Book.genre,
+        image_path: "media/fake_#{Faker::Alphanumeric.alpha(number: 5)}.jpg"
+      )
     end
   end
 end

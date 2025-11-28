@@ -1,23 +1,33 @@
 # main.rb
 require_relative 'lib/app_config_loader'
-# Підключаємо новий файл (хоча load_libs мав би зробити це сам, але для надійності)
-require_relative 'lib/logger_manager' 
+require_relative 'lib/logger_manager'
+require_relative 'lib/item' # <--- Підключаємо наш новий клас
 
 # 1. Ініціалізація
 config_loader = Tarnovetskyi::AppConfigLoader.new
 config_loader.load_libs(Dir.pwd)
 config_data = config_loader.config('config/default_config.yaml', 'config')
 
-# 2. Налаштування Логування (НОВЕ)
-puts "--- Ініціалізація Логера ---"
-# Передаємо весь хеш конфігурації, клас сам знайде ключ 'logging'
 Tarnovetskyi::LoggerManager.init_logger(config_data)
 
-# 3. Тестовий запис у лог
-Tarnovetskyi::LoggerManager.log_processed_file("Програма успішно запустилася!")
-Tarnovetskyi::LoggerManager.log_error("Це тестовий запис помилки (не хвилюйтесь).")
+puts "--- Тестування Класу Item ---"
 
-puts "Логування завершено. Перевірте файл logs/app.log"
+# 1. Створення звичайного об'єкта
+item1 = Tarnovetskyi::Item.new(name: "Ruby Programming", price: 50.0, category: "IT")
+puts "Створено: #{item1}"
 
-# (Вивід JSON поки можна закоментувати, щоб не засмічувати екран)
-# config_loader.pretty_print_config_data
+# 2. Створення фейкового об'єкта
+puts "\n--- Генерація Fake Item ---"
+fake_item = Tarnovetskyi::Item.generate_fake
+puts fake_item.inspect
+
+# 3. Перевірка блоку update
+puts "\n--- Оновлення Item ---"
+item1.update do |i|
+  i.price = 99.99
+  i.name = "Advanced Ruby"
+end
+puts "Оновлено: #{item1}"
+
+# 4. Перевірка логів
+puts "\nПеревірте logs/app.log - там мають бути записи про створення та оновлення."
