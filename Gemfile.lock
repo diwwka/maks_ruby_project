@@ -73,6 +73,7 @@ GEM
     public_suffix (7.0.0)
     racc (1.8.1)
     rainbow (3.1.1)
+    rake (13.2.1)
     rbs (3.9.5)
       logger
     regexp_parser (2.11.3)
@@ -143,6 +144,7 @@ DEPENDENCIES
   httparty
   mechanize
   nokogiri
+  rake
   rubocop
   solargraph
   sqlite3

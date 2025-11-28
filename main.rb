@@ -1,30 +1,14 @@
-require_relative 'lib/app_config_loader'
-require_relative 'lib/logger_manager'
-require_relative 'lib/database_connector' # <--- Підключаємо конектор
+require_relative 'lib/engine'
 
-# Ініціалізація
-config_loader = Tarnovetskyi::AppConfigLoader.new
-config_loader.load_libs(Dir.pwd)
-config_data = config_loader.config('config/default_config.yaml', 'config')
-Tarnovetskyi::LoggerManager.init_logger(config_data)
+puts "--- ЗАПУСК ПРОГРАМИ (MaksApp / Tarnovetskyi) ---"
 
-puts "--- Тестування DatabaseConnector ---"
-
-# 1. Створення конектора
-connector = Tarnovetskyi::DatabaseConnector.new(config_data)
-
-# 2. Підключення
-puts "Підключаємося до БД..."
-connector.connect_to_database
-
-# 3. Перевірка
-if connector.db
-  puts "Підключення успішне! Об'єкт БД: #{connector.db}"
-  puts "Перевірте папку db/ - там мав з'явитися файл local_database.sqlite"
-else
-  puts "Помилка підключення!"
+begin
+  # Створюємо і запускаємо Двигун
+  engine = Tarnovetskyi::Engine.new
+  engine.run
+  
+  puts "\nПрограма успішно виконала роботу!"
+  puts "Перевірте папку output/ та базу даних db/local_database.sqlite"
+rescue StandardError => e
+  puts "Виникла помилка під час запуску: #{e.message}"
 end
-
-# 4. Закриття
-connector.close_connection
-puts "З'єднання закрито."
