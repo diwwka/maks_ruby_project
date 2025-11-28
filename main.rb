@@ -1,7 +1,6 @@
-# main.rb
 require_relative 'lib/app_config_loader'
 require_relative 'lib/logger_manager'
-require_relative 'lib/configurator' # <--- Підключаємо
+require_relative 'lib/database_connector' # <--- Підключаємо конектор
 
 # Ініціалізація
 config_loader = Tarnovetskyi::AppConfigLoader.new
@@ -9,19 +8,23 @@ config_loader.load_libs(Dir.pwd)
 config_data = config_loader.config('config/default_config.yaml', 'config')
 Tarnovetskyi::LoggerManager.init_logger(config_data)
 
-puts "--- Тестування Configurator ---"
+puts "--- Тестування DatabaseConnector ---"
 
-# 1. Створення конфігуратора
-app_config = Tarnovetskyi::Configurator.new
-puts "Дефолтні налаштування: #{app_config.config}"
+# 1. Створення конектора
+connector = Tarnovetskyi::DatabaseConnector.new(config_data)
 
-# 2. Зміна налаштувань
-puts "\nЗмінюємо налаштування..."
-app_config.configure(
-  run_website_parser: 1,
-  run_save_to_json: 1,
-  run_save_to_csv: 1,
-  run_fake_method: 1 # Це має викликати помилку/попередження
-)
+# 2. Підключення
+puts "Підключаємося до БД..."
+connector.connect_to_database
 
-puts "Оновлені налаштування: #{app_config.config}"
+# 3. Перевірка
+if connector.db
+  puts "Підключення успішне! Об'єкт БД: #{connector.db}"
+  puts "Перевірте папку db/ - там мав з'явитися файл local_database.sqlite"
+else
+  puts "Помилка підключення!"
+end
+
+# 4. Закриття
+connector.close_connection
+puts "З'єднання закрито."
